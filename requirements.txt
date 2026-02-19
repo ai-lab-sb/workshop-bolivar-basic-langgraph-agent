@@ -1,0 +1,5 @@
+langchain
+google-auth
+langchain_google_vertexai
+pandas
+google-cloud-firestore
