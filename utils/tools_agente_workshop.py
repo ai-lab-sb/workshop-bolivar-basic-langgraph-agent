@@ -8,7 +8,8 @@ from langchain_core.tools import tool
 from langchain_core.messages import ToolMessage
 from langgraph.types import Command
 
-from helpers.clients_n_models import FirestoreVectorStore, llm
+from utils.fs_vector_store import FirestoreVectorStore
+from helpers.llm_config import llm
 
 
 class InputRAGTool(BaseModel):
