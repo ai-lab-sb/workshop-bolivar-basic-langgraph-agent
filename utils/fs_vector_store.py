@@ -1,6 +1,3 @@
-import sys
-sys.path.append(".secrets")
-
 import logging
 import os
 from google.cloud import firestore
@@ -13,8 +10,6 @@ from google.cloud.firestore_v1.vector import Vector
 from datetime import datetime
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.base_query import FieldFilter
-
-from load_credentials import load_credentials
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
@@ -56,9 +51,8 @@ class FirestoreVectorStore:
         os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "True"
 
         try:
-            credentials = load_credentials()
-            self.db = firestore.Client(project=project, database=database, credentials=credentials)
-            self.genai_client = genai.Client(project=project, vertexai=True, credentials=credentials)
+            self.db = firestore.Client(project=project, database=database)
+            self.genai_client = genai.Client(project=project, vertexai=True)
             logger.info(f"FirestoreVectorStore inicializado: proyecto={project}, database={database}, colección={collection}, location={location}")
         except GoogleCloudError as e:
             logger.error(f"Error al inicializar Firestore: {e}")
@@ -155,7 +149,7 @@ class FirestoreVectorStore:
         except Exception as e:
             logger.error(f"Error al generar embeddings: {e}")
             raise
-
+    
     def embed_documents(self, documents: list[dict], embedding_model: str = "gemini-embedding-001", dimension: int = 2048, text_key: str = "text"):
         """
         Genera embeddings para una lista de documentos y los agrega al campo fijo 'embedding'.
@@ -347,7 +341,7 @@ class FirestoreVectorStore:
         except Exception as e:
             logger.error(f"Error inesperado al buscar documentos: {e}")
             raise
-
+    
     def get_document_by_id(self, document_id: str):
         """
         Obtiene un documento específico por su ID.
@@ -624,7 +618,7 @@ class FirestoreVectorStore:
         except Exception as e:
             logger.error(f"Error inesperado al actualizar documento: {e}")
             raise
-    
+
     def delete_collection(self, batch_size: int = 500):
         """
         Elimina todos los documentos de la colección.
