@@ -62,6 +62,6 @@ async def options_product_recomm(request: Request):
 
 if __name__ == '__main__':
     import uvicorn
-    puerto = os.environ.get("PORT", 8080)
+    puerto = os.environ.get("PORT", 8001)
     # puerto = 8001
     uvicorn.run(app, host="127.0.0.1", port=int(puerto))
